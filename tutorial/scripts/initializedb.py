@@ -4,16 +4,13 @@ import transaction
 
 from sqlalchemy import engine_from_config
 
-from pyramid.paster import (
-    get_appsettings,
-    setup_logging,
-    )
+from pyramid.paster import get_appsettings
+from pyramid.paster import setup_logging
 
-from ..models import (
-    DBSession,
-    MyModel,
-    Base,
-    )
+from ..models import DBSession
+from ..models import Page
+from ..models import Dog
+from ..models import Base
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -31,5 +28,8 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = MyModel(name='one', value=1)
-        DBSession.add(model)
+        page = Page('FrontPage', 'This is the front page')
+        DBSession.add(page)
+
+        dog = Dog('Trilly', 2, 'bastardino')
+        DBSession.add(dog)
